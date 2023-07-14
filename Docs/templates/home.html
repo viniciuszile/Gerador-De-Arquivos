@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Arquivos</title>
+    
+    <style>
+        *{
+            margin: 0px;
+            padding: 0px;
+        }
+        
+        footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            background-color: #f5f5f5;
+            text-align: center;
+          }
+        
+        .container{
+            width: 100%;
+            height: 700px;
+            background-color: rgb(255, 255, 0);
+            font-family: Gill Sans, sans-serif;
+            align-items: center;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .form-group {
+            width: 400px;
+            height: 350px;
+            background-color: #111;
+            border: solid black 2px;
+            border-top-right-radius: 10px;
+            border-bottom-right-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-evenly;
+            flex-direction: column;
+            margin: 30px;
+            box-shadow:20px 10px black;
+        }
+        
+        .form-group h1{
+            color: white;
+            font-size: xx-larger;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        }
+        
+        .form-label {
+            color: white;
+            font-size: 20px;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        }
+        
+        .form-input {
+            width: 250px;
+            height: 20px;
+        
+        }
+        
+        
+        /* CSS botao zika*/
+        .button-85 {
+            padding: 0.6em 2em;
+            border: none;
+            outline: none;
+            color: rgb(255, 255, 255);
+            background: #111;
+            cursor: pointer;
+            position: relative;
+            z-index: 0;
+            border-radius: 10px;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+          }
+          
+          .button-85:before {
+            content: "";
+            background: linear-gradient(
+              45deg,
+              #ff0000,
+              #ff7300,
+              #fffb00,
+              #48ff00,
+              #00ffd5,
+              #002bff,
+              #7a00ff,
+              #ff00c8,
+              #ff0000
+            );
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            background-size: 400%;
+            z-index: -1;
+            filter: blur(5px);
+            -webkit-filter: blur(5px);
+            width: calc(100% + 4px);
+            height: calc(100% + 4px);
+            animation: glowing-button-85 20s linear infinite;
+            transition: opacity 0.3s ease-in-out;
+            border-radius: 10px;
+          }
+          
+          @keyframes glowing-button-85 {
+            0% {
+              background-position: 0 0;
+            }
+            50% {
+              background-position: 400% 0;
+            }
+            100% {
+              background-position: 0 0;
+            }
+          }
+          
+          .button-85:after {
+            z-index: -1;
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: #222;
+            left: 0;
+            top: 0;
+            border-radius: 10px;
+          }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="form-group">
+
+        <h1>Gerador de Arquivos do index</h1>
+
+        <label class="form-label" for="nome">Nome dos arquivos:</label>
+        <input placeholder="EX: scripts " class="form-input" type="text" id="nome" name="nome" required>
+
+
+        <label class="form-label" for="extensao">Extensão do arquivo:</label>
+        <input placeholder="EX: .py" class="form-input" type="text" id="extensao" name="extensao" required>
+
+
+        <label class="form-label" for="quantidade">Quantidade de arquivos:</label>
+
+        <input placeholder="EX: 10" class="form-input" type="number" id="quantidade" name="quantidade" required>
+
+        <a  href="downloads.html"><button  onclick="criarArquivos()" class="button-85" role="button">
+            Enviar</button></a>
+
+    </div>
+
+    </div>
+    <footer>
+        <h1>Entre em contato</h1>
+        <p>Fique à vontade para nos contatar para mais informações ou parcerias.</p>
+        <a href="https://github.com/viniciuszile"><i class="fa fa-github" style="color: #000000; font-size: 50px; margin: 10px"></i></a>
+        <a href="https://www.linkedin.com/in/vinicius-zile-91814a21a/"><i class="fa fa-instagram" style="color: #000000; font-size: 50px; margin: 10px"></i></a>
+        <a href="https://www.instagram.com/viniciuszile/"><i class="fa fa-linkedin" style="color: #000000; font-size: 50px; margin: 10px"></i></a>
+
+        
+    </footer>
+    
+
+
+</body>
+
+    <script type="text/javascript">
+        function criarArquivos() {
+            var nome = document.getElementById("nome").value;
+            var extensao = document.getElementById("extensao").value;
+            var quantidade = document.getElementById("quantidade").value;
+        
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/criar_arquivos", true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var response = JSON.parse(xhr.responseText);
+                    if (response.success) {
+                        // Redireciona para o novo arquivo HTML
+                        window.location.href = "novo_arquivo.html";
+                    } else {
+                        alert("Ocorreu um erro ao criar os arquivos.");
+                    }
+                }
+            };
+        
+            xhr.send(JSON.stringify({
+                nome: nome,
+                extensao: extensao,
+                quantidade: quantidade
+            }));
+        }
+        
+        function baixarArquivo() {
+            window.location.href = "Arquivos_Criados.zip";
+        }
+    </script>
+
+</html>

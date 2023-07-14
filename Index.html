@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Arquivos</title>
+    <link rel="stylesheet" href="Style/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+
+<body>
+
+        <div class="container">
+            <div class="form-group">
+
+            <h1>Gerador de Arquivos do index</h1>
+
+            <label class="form-label" for="nome">Nome dos arquivos:</label>
+            <input placeholder="EX: scripts " class="form-input" type="text" id="nome" name="nome" required>
+
+
+            <label class="form-label" for="extensao">Extensão do arquivo:</label>
+            <input placeholder="EX: .py" class="form-input" type="text" id="extensao" name="extensao" required>
+
+
+            <label class="form-label" for="quantidade">Quantidade de arquivos:</label>
+
+            <input placeholder="EX: 10" class="form-input" type="number" id="quantidade" name="quantidade" required>
+
+            <a  href="downloads.html"><button  onclick="criarArquivos()" class="button-85" role="button">
+                Enviar</button></a>
+
+        </div>
+
+        </div>
+        <footer>
+            <h1>Entre em contato</h1>
+            <p>Fique à vontade para nos contatar para mais informações ou parcerias.</p>
+            <a href="https://github.com/viniciuszile"><i class="fa fa-github" style="color: #000000; font-size: 50px; margin: 10px"></i></a>
+            <a href="https://www.linkedin.com/in/vinicius-zile-91814a21a/"><i class="fa fa-instagram" style="color: #000000; font-size: 50px; margin: 10px"></i></a>
+            <a href="https://www.instagram.com/viniciuszile/"><i class="fa fa-linkedin" style="color: #000000; font-size: 50px; margin: 10px"></i></a>
+
+            
+        </footer>
+        
+
+    
+</body>
+
+<script type="text/javascript">
+    function criarArquivos() {
+        var nome = document.getElementById("nome").value;
+        var extensao = document.getElementById("extensao").value;
+        var quantidade = document.getElementById("quantidade").value;
+    
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/criar_arquivos", true);
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                if (response.success) {
+                    // Redireciona para o novo arquivo HTML
+                    window.location.href = "novo_arquivo.html";
+                } else {
+                    alert("Ocorreu um erro ao criar os arquivos.");
+                }
+            }
+        };
+    
+        xhr.send(JSON.stringify({
+            nome: nome,
+            extensao: extensao,
+            quantidade: quantidade
+        }));
+    }
+    
+    function baixarArquivo() {
+        window.location.href = "Arquivos_Criados.zip";
+    }
+</script>
+</html>
